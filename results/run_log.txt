@@ -1,0 +1,99 @@
+Python 3.13.16 | numpy 2.5.3 | pandas 3.0.5 | scipy 1.18.1 | scikit-learn 1.9.1 | matplotlib 3.11.2 | Linux-6.18.44-fc-v153-x86_64-with-glibc2.39
+[TN0] Kiểm chứng cài đặt tự viết
+  -> results/tn0_hand_example.csv
+ alpha  beta1_A  beta2_A  beta1_B  beta2_B     cond  sum_beta_A     df
+   0.0   1.4975  -0.5025  -0.5025   1.4975 199.0000      0.9950 2.0000
+   0.1   0.5646   0.3828   0.3828   0.5646  19.0000      0.9474 1.0431
+   1.0   0.3410   0.3212   0.3212   0.3410   2.9604      0.6622 0.6755
+  -> results/tn0_scratch_vs_sklearn.csv
+  Sai lệch hệ số lớn nhất so với sklearn: 2.20e-06
+   (0.4 s)
+
+[TN1] So sánh 4 mô hình trên Diabetes
+  Dữ liệu: 442 mẫu x 10 đặc trưng | train 353, test 89 | y trong [25, 346] | thiếu: 0
+  -> results/tn1_data_describe_train.csv
+  -> results/tn1_corr_train.csv
+  -> results/tn1_vif_train.csv
+  VIF (train): s1=55.3, s2=35.8, s3=14.3, s5=10.1, s4=9.3, bmi=1.6, s6=1.5, bp=1.4, sex=1.3, age=1.2
+  -> results/tn1_metrics.csv
+  -> results/tn1_coefficients_standardized.csv
+     model  alpha  l1_ratio  RMSE_train  RMSE_CV_mean  RMSE_CV_std  MAE_test  RMSE_test  R2_test  n_nonzero_coef
+       OLS    NaN       NaN     53.5588       55.2968       3.5226   42.7941    53.8534   0.4526              10
+     Ridge 1.2068       NaN     53.5804       55.2738       3.5052   42.8146    53.7673   0.4544              10
+     Lasso 0.1099       NaN     53.6051       55.2912       3.4984   42.8067    53.6991   0.4557               9
+ElasticNet 0.0042       0.1     53.5842       55.2738       3.5065   42.8162    53.7610   0.4545              10
+   (26.0 s)
+
+[TN2] Quét alpha cho Ridge
+  -> results/tn2_alpha_curve.csv
+  alpha tốt nhất (CV) = 1.207, RMSE CV = 55.274 | alpha theo quy tắc 1-SE = 109.9
+  -> results/tn2_table_5_4.csv
+  -> figures/hinh_5_3_alpha_curve.png
+   (7.6 s)
+
+[TN3] Ridge trace và đường hệ số Lasso
+  -> results/tn3_ridge_trace.csv
+  -> results/tn3_lasso_path.csv
+  Lasso: alpha đầu tiên mà hệ số = 0: s3=0.11, s2=0.356, s4=1.46, age=1.84, s1=3.73, s6=4.71, sex=7.54, bp=24.4, bmi=49.4, s5=49.4
+  Ridge ở alpha nhỏ nhất: {'age': np.float64(1.8), 'sex': np.float64(-11.5), 'bmi': np.float64(25.6), 'bp': np.float64(16.8), 's1': np.float64(-44.4), 's2': np.float64(24.6), 's3': np.float64(7.7), 's4': np.float64(13.1), 's5': np.float64(35.2), 's6': np.float64(2.4)}
+  Ridge ở alpha lớn nhất: {'age': np.float64(0.47), 'sex': np.float64(-0.03), 'bmi': np.float64(1.52), 'bp': np.float64(1.11), 's1': np.float64(0.44), 's2': np.float64(0.32), 's3': np.float64(-0.94), 's4': np.float64(1.02), 's5': np.float64(1.36), 's6': np.float64(0.94)}
+  -> figures/hinh_5_4_ridge_trace.png
+   (0.5 s)
+
+[TN4] Lặp lại quy trình với 20 seed (mất vài phút)
+  seed  0 xong
+  seed  1 xong
+  seed  2 xong
+  seed  3 xong
+  seed  4 xong
+  seed  5 xong
+  seed  6 xong
+  seed  7 xong
+  seed  8 xong
+  seed  9 xong
+  seed 10 xong
+  seed 11 xong
+  seed 12 xong
+  seed 13 xong
+  seed 14 xong
+  seed 15 xong
+  seed 16 xong
+  seed 17 xong
+  seed 18 xong
+  seed 19 xong
+  -> results/tn4_seeds_raw.csv
+  -> results/tn4_summary.csv
+     model  RMSE_test_mean  RMSE_test_std  R2_test_mean  diff_vs_OLS_mean  diff_vs_OLS_std  seeds_better_than_OLS  alpha_median  alpha_min  alpha_max
+       OLS         54.8318         2.1045        0.4646            0.0000           0.0000                      0           NaN        NaN        NaN
+     Ridge         54.8172         2.1799        0.4651           -0.0147           0.3066                     13       16.7683     0.2683    24.4205
+     Lasso         54.7672         2.2396        0.4660           -0.0646           0.4092                     11        0.9355     0.0010     1.4563
+ElasticNet         54.8050         2.1762        0.4654           -0.0268           0.3526                     14        0.0750     0.0010     0.3162
+  -> figures/hinh_5_5_seeds.png
+   (479.7 s)
+
+[TN5a] Đa thức bậc 9 (mô phỏng)
+  -> results/tn5a_polynomial.csv
+  -> results/tn5a_train_points.csv
+         model  alpha  RMSE_train  RMSE_test  max_abs_coef  coef_norm
+   OLS (α = 0)   0.00      0.0861     1.8102     2032.6534  4029.6812
+Ridge α = 0,01   0.01      0.1739     0.3289        1.6559     2.9587
+   Ridge α = 1   1.00      0.2576     0.4029        0.3615     0.7054
+  -> figures/hinh_5_2_polynomial.png
+[TN5b] Đa cộng tuyến (mô phỏng)
+  -> results/tn5b_collinearity_raw.csv
+  -> results/tn5b_coefficients_raw.csv
+  -> results/tn5b_summary.csv
+ rho model  b1_mean  b1_std  avg_coef_std  coef_sq_error_mean  RMSE_test_mean  alpha_median
+0.00   OLS    3.034   0.285         0.310               0.969           3.160         0.000
+0.00 Ridge    2.849   0.295         0.296               0.926           3.154         6.310
+0.50   OLS    2.992   0.393         0.418               1.752           3.170         0.000
+0.50 Ridge    2.643   0.415         0.373               1.639           3.162         7.943
+0.90   OLS    3.078   0.863         0.927               8.568           3.166         0.000
+0.90 Ridge    2.039   0.791         0.611               5.468           3.119         7.943
+0.99   OLS    2.896   2.660         3.032              92.415           3.162         0.000
+0.99 Ridge    1.167   0.934         0.961              15.749           3.045         8.972
+  -> figures/hinh_5_6_collinearity.png
+   (3.5 s)
+
+Hoàn tất sau 517.6 s. Kết quả: results/, hình: figures/
+EXIT 0

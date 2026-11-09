@@ -1,0 +1,5 @@
+model,RMSE_test_mean,RMSE_test_std,R2_test_mean,diff_vs_OLS_mean,diff_vs_OLS_std,seeds_better_than_OLS,alpha_median,alpha_min,alpha_max
+OLS,54.8318,2.10453,0.464584,0,0,0,,,
+Ridge,54.8172,2.17989,0.465082,-0.0146677,0.306575,13,16.7683,0.26827,24.4205
+Lasso,54.7672,2.23961,0.466007,-0.06462,0.409166,11,0.935541,0.001,1.45635
+ElasticNet,54.805,2.17624,0.465377,-0.026847,0.352639,14,0.0749894,0.001,0.316228

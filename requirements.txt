@@ -1,0 +1,7 @@
+# Phiên bản tối thiểu. Phiên bản đã kiểm thử: xem results/environment.txt
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+scikit-learn>=1.3
+matplotlib>=3.7
+streamlit>=1.30
